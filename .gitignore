@@ -1,0 +1,12 @@
+# Claude cache
+.claude
+PROJECT_SUMMARY.md
+
+# npm cache
+node_modules
+.next
+next-env.d.ts
+.env*
+
+# Prisma database file (dev.db committed for mock data deployment)
+# *.db

@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Bauhaus Primary Palette ── */
+  --color-bauhaus-red: #D62828;
+  --color-bauhaus-blue: #003F88;
+  --color-bauhaus-yellow: #F7B731;
+  --color-bauhaus-black: #0D0D0D;
+  --color-bauhaus-white: #F5F0E8;
+  --color-bauhaus-gray: #9B9B9B;
+  --color-bauhaus-light: #EAE4D9;
+  --color-bauhaus-green: #2D6A4F;
+
+  /* ── Legacy aliases (kept for compat) ── */
+  --color-surface: #EAE4D9;
+  --color-border: #0D0D0D;
+
+  /* ── Typography ── */
+  --font-sans: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'DM Sans', system-ui, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700;900&display=swap');
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bauhaus-light);
+  color: var(--color-bauhaus-black);
+}

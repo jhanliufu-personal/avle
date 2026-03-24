@@ -1,0 +1,176 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String
+  createdAt DateTime @default(now())
+
+  contracts       Contract[]
+  equityAccount   EquityAccount?
+  investorProfile InvestorProfile?
+  investorReports InvestorReport[]
+}
+
+model Landlord {
+  id         String     @id @default(cuid())
+  name       String
+  email      String     @unique
+  createdAt  DateTime   @default(now())
+  properties Property[]
+}
+
+model Property {
+  id          String     @id @default(cuid())
+  landlordId  String
+  landlord    Landlord   @relation(fields: [landlordId], references: [id])
+  address     String
+  city        String
+  state       String
+  zip         String
+  unit        String?
+  type        String
+  tier        String
+  marketValue Float
+  totalUnits  Int        @default(1)
+  contracts   Contract[]
+}
+
+model Contract {
+  id                  String    @id @default(cuid())
+  userId              String
+  user                User      @relation(fields: [userId], references: [id])
+  propertyId          String
+  property            Property  @relation(fields: [propertyId], references: [id])
+  contractModel       String
+  status              String
+  startDate           DateTime
+  preNegotiatedPrice  Float
+  monthlyTotal        Float
+  baseRent            Float
+  equityContribution  Float
+  platformFee         Float
+  propertyReserve     Float
+  vestingMonths       Int
+  purchaseOptionMonth Int
+  renewalCapPct       Float
+  riskScore           Float?
+  riskTier            String?
+  bankName            String    @default("Chase Bank")
+  bankLast4           String    @default("4242")
+  autopayEnabled      Boolean   @default(true)
+  nextPaymentDate     DateTime?
+  createdAt           DateTime  @default(now())
+
+  payments  Payment[]
+  documents Document[]
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  contractId      String
+  contract        Contract @relation(fields: [contractId], references: [id])
+  date            DateTime
+  totalAmount     Float
+  baseRent        Float
+  equityContrib   Float
+  platformFee     Float
+  propertyReserve Float
+  status          String
+  createdAt       DateTime @default(now())
+}
+
+model EquityAccount {
+  id                  String           @id @default(cuid())
+  userId              String           @unique
+  user                User             @relation(fields: [userId], references: [id])
+  totalBalance        Float
+  directContributions Float
+  marketReturns       Float
+  platformMatch       Float
+  targetMarketReturn  Float            @default(7.5)
+  monthsActive        Int
+  projectedFiveYear   Float
+  snapshots           EquitySnapshot[]
+}
+
+model EquitySnapshot {
+  id              String        @id @default(cuid())
+  equityAccountId String
+  equityAccount   EquityAccount @relation(fields: [equityAccountId], references: [id])
+  month           DateTime
+  cumulativeTotal Float
+  contributions   Float
+  returns         Float
+}
+
+model Document {
+  id         String    @id @default(cuid())
+  contractId String
+  contract   Contract  @relation(fields: [contractId], references: [id])
+  name       String
+  type       String
+  signedDate DateTime?
+  status     String
+  createdAt  DateTime  @default(now())
+}
+
+model InvestorProfile {
+  id               String @id @default(cuid())
+  userId           String @unique
+  user             User   @relation(fields: [userId], references: [id])
+  totalPortfolio   Float
+  annualizedReturn Float
+  monthlyNOI       Float
+  firmName         String @default("ArcusVenturis Capital")
+}
+
+model ReturnScenario {
+  id        String @id @default(cuid())
+  name      String
+  returnPct Float
+}
+
+model NOIProjection {
+  id        String   @id @default(cuid())
+  month     DateTime
+  projected Float
+  lower     Float
+  upper     Float
+}
+
+model PortfolioTier {
+  id         String @id @default(cuid())
+  name       String
+  percentage Float
+  color      String
+}
+
+model PipelineStage {
+  id    String @id @default(cuid())
+  name  String
+  count Int
+  color String
+  order Int
+}
+
+model InvestorReport {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  title       String
+  type        String
+  period      String
+  status      String
+  generatedAt DateTime @default(now())
+}
