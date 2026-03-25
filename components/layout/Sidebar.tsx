@@ -58,7 +58,7 @@ export default function Sidebar({ portalName, navItems, accentColor }: SidebarPr
       {/* Sign out */}
       <div className="px-3 py-5 border-t border-[#2a2a2a]">
         <button
-          onClick={() => signOut({ callbackUrl: '/login' })}
+          onClick={() => signOut({ callbackUrl: `${window.location.origin}/login` })}
           className="w-full flex items-center px-3 py-2.5 text-[11px] font-black uppercase tracking-widest transition-colors text-[#9B9B9B] hover:text-[#D62828]"
           style={{ borderLeft: '4px solid transparent', paddingLeft: '8px' }}
         >
