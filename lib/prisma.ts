@@ -2,8 +2,14 @@ import { PrismaClient } from '@prisma/client'
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
+const datasourceUrl = process.env.DATABASE_URL ?? 'file:./dev.db'
+console.log('[PRISMA] datasourceUrl:', datasourceUrl)
+
 export const prisma =
   globalForPrisma.prisma ??
-  new PrismaClient({ log: process.env.NODE_ENV === 'development' ? ['error'] : [] })
+  new PrismaClient({
+    datasourceUrl,
+    log: process.env.NODE_ENV === 'development' ? ['error'] : [],
+  })
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
