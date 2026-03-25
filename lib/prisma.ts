@@ -2,8 +2,8 @@ import { PrismaClient } from '@prisma/client'
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
-const datasourceUrl = process.env.DATABASE_URL ?? 'file:./dev.db'
-console.log('[PRISMA] datasourceUrl:', datasourceUrl)
+const datasourceUrl = process.env.DATABASE_URL ?? 'file:/var/task/prisma/dev.db'
+console.log('[PRISMA] datasourceUrl:', datasourceUrl, 'cwd:', process.cwd())
 
 export const prisma =
   globalForPrisma.prisma ??
