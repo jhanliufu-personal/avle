@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from './prisma'
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET || 'temp-test-secret-delete-me',
+  secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-arcusventuris',
   session: { strategy: 'jwt' },
   pages: { signIn: '/login' },
   providers: [

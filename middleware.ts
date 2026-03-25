@@ -18,6 +18,7 @@ export default withAuth(
     return NextResponse.next()
   },
   {
+    secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-arcusventuris',
     callbacks: { authorized: ({ token }) => !!token },
   }
 )
